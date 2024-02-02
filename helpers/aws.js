@@ -5,8 +5,8 @@ const { randomBytes } = require("crypto");
 // prepare S3 client
 const bucketName = 'acabucket';
 const region = 'us-east-1';
-const accessKeyId = 'DO00E6GDWXZ9QNAKPV8B';
-const secretAccessKey = 'dop_v1_648a92f5ca10b7a3192bfcb694b8bb8698bb59e66c2f8d0f1f1f506a892fda3b';
+const accessKeyId = 'DO00XPGN8Q86MN438NN3';
+const secretAccessKey = 'VNM2xYl0Yu4o/BLeJWq/r26hgH0omZQ08z7ROlVZizc';
 
 // AWS_BUCKET_NAME = dash93
 // AWS_BUCKET_REGION =us-east-1
