@@ -116,6 +116,11 @@ const io = new Server(server, {
 
 
 app.set('socketio', io);
+io.use((socket, next) => {
+    const err = new Error("not authorized");
+    err.data = { content: "Please retry later" }; // additional details
+    next(err);
+  });
 // app.use(passport.initialize());
 //   app.use(passport.session());
 

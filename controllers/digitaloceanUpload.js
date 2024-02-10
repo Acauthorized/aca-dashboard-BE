@@ -17,14 +17,12 @@ const bucketName = 'acabucket';
 const region = 'us-east-1';
 const accessKeyId = 'DO00XPGN8Q86MN438NN3';
 const secretAccessKey = 'VNM2xYl0Yu4o/BLeJWq/r26hgH0omZQ08z7ROlVZizc';
-debugger
 // AWS_BUCKET_NAME = dash93
 // AWS_BUCKET_REGION =us-east-1
 
 // AWS_ACCESS_KEY =DO00M9XA6DJ9P9Y4UWFT
 // AWS_SECRET_ACCESS_KEY =fcWJxA4nn0r5yNKUi1011UzQ66FPMO6Lt8UEuGWSypE
 
-debugger
 const endpoint = 'https://nyc3.digitaloceanspaces.com';
 const cdnEndpoint = 'https://acabucket.nyc3.digitaloceanspaces.com';
 
