@@ -18,7 +18,7 @@ function init(httpServer) {
         },
     });
 
-    io.on('connection', (socket) => {
+    io.sockets.on('connection', (socket) => {
         console.log(`New connection: ${socket.id}`);
 
         socket.emit('start', 'start');
