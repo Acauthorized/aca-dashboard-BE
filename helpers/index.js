@@ -23,25 +23,45 @@ function init(httpServer) {
 
         socket.emit('start', 'start');
 
-       socket.on('search', (data) => {
-            console.log('SEARCH🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟', data);
-           // io.emit('search_cust', data);
-            io.emit('search_server', { ...data, message: 'Search from server with data' });
-        });
+    //    socket.on('search', (data) => {
+    //         console.log('SEARCH🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟', data);
+    //        // io.emit('search_cust', data);
+    //         io.emit('search_server', { ...data, message: 'Search from server with data' });
+    //     });
 
-    socket.on('create_cust', (data) => {
-            console.log('SEARCH🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟', data);
+    // socket.on('create_cust', (data) => {
+    //         console.log('SEARCH🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟', data);
 
-            io.emit('create_cust-execute', { ...data, message: 'New Customer created by agent' });
-        });
+    //         io.emit('create_cust-execute', { ...data, message: 'New Customer created by agent' });
+    //     });
 
-        //io.emit('status', notification);
+    //     //io.emit('status', notification);
 
-        socket.on('status-customer', (data) => {
-            console.log('STATUSSSSSSSSSSSSS🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟', data);
+    //     socket.on('status-customer', (data) => {
+    //         console.log('STATUSSSSSSSSSSSSS🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟', data);
 
-            io.emit('status', { status: data, message: ' Customer Status changed' });
-        });
+    //         io.emit('status', { status: data, message: ' Customer Status changed' });
+    //     });
+    });
+
+    io.on('search', (data) => {
+        console.log('SEARCH🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟', data);
+       // io.emit('search_cust', data);
+        io.emit('search_server', { ...data, message: 'Search from server with data' });
+    });
+
+io.on('create_cust', (data) => {
+        console.log('SEARCH🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟', data);
+
+        io.emit('create_cust-execute', { ...data, message: 'New Customer created by agent' });
+    });
+
+    //io.emit('status', notification);
+
+    io.on('status-customer', (data) => {
+        console.log('STATUSSSSSSSSSSSSS🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟', data);
+
+        io.emit('status', { status: data, message: ' Customer Status changed' });
     });
 
     //return io;
