@@ -23,28 +23,28 @@ function init(httpServer) {
 
         socket.emit('start', 'start');
 
-       io.on('search', (data) => {
+       socket.on('search', (data) => {
             console.log('SEARCH🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟', data);
-            socket.emit('search_cust', data);
-            socket.emit('search_server', { ...data, message: 'Search from server with data' });
+           // io.emit('search_cust', data);
+            io.emit('search_server', { ...data, message: 'Search from server with data' });
         });
 
-        io.on('create_cust', (data) => {
+    socket.on('create_cust', (data) => {
             console.log('SEARCH🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟', data);
 
-            socket.emit('create_cust-execute', { ...data, message: 'New Customer created by agent' });
+            io.emit('create_cust-execute', { ...data, message: 'New Customer created by agent' });
         });
 
         //io.emit('status', notification);
 
-        io.on('status-customer', (data) => {
+        socket.on('status-customer', (data) => {
             console.log('STATUSSSSSSSSSSSSS🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟', data);
 
-            socket.emit('status', { status: data, message: ' Customer Status changed' });
+            io.emit('status', { status: data, message: ' Customer Status changed' });
         });
     });
 
-    return io;
+    //return io;
 }
 
 // function getIO() {
