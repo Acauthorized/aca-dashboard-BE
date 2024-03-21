@@ -12,7 +12,9 @@ const passport = require('passport');
 
 const { Server } = require('socket.io');
 const { socketOrder } = require('./helpers/socket');
-const Employee = require('./models/employee')
+const { init } = require('./helpers'); 
+
+const Employee = require('./models/employee');
 const jwtSettings = require('./constants/jwtSettings');
 const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
@@ -22,12 +24,12 @@ const loginRoute = require('./routes/login');
 const customersRoute = require('./routes/customers');
 const employeesRoute = require('./routes/employees');
 
-const notificationsRoute = require('./routes/notifications')
+const notificationsRoute = require('./routes/notifications');
 
 dotenv.config({ path: '.env' });
 mongoose.connect(
     //'mongodb+srv://maher:maher9326@cluster0.nf63j.mongodb.net/theme?retryWrites=true&w=majority',
-    "mongodb+srv://hamad:hamadhamad@acaserverlessinstance.lxbny28.mongodb.net/first?retryWrites=true&w=majority",
+    'mongodb+srv://hamad:hamadhamad@acaserverlessinstance.lxbny28.mongodb.net/first?retryWrites=true&w=majority',
     { useNewUrlParser: true, useUnifiedTopology: true },
     (err) => {
         if (err) {
@@ -54,24 +56,17 @@ const opts = {};
 opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
 opts.secretOrKey = jwtSettings.SECRET;
 
-
-
-
-
 passport.use(
     new JwtStrategy(opts, (payload, done) => {
         const _id = payload.id;
-       
-      //  findDocument
+
+        //  findDocument
         Employee.findById(_id)
             .then((result) => {
-                
                 if (result) {
-                    
-                     // console.log("resul passport  ☀️  ☀️  ☀️" , result)
+                    // console.log("resul passport  ☀️  ☀️  ☀️" , result)
                     return done(null, result);
                 } else {
-                
                     return done(null, false);
                 }
             })
@@ -81,8 +76,6 @@ passport.use(
     }),
 );
 //END
-
-
 
 //ROUTES
 app.use('/upload', uploadRoute);
@@ -105,29 +98,44 @@ const port = process.env.PORT || '3300';
 const server = app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);
 });
-const io = new Server(server, {
-    cors: {
-         origin: true,
-        Credential: true,
-        // origin: 'http://localhost:3000',
-        // methods: ['GET', 'POST'],
-    },
-});
 
 
-app.set('socketio', io);
-io.use((socket, next) => {
-    const err = new Error("not authorized");
-    err.data = { content: "Please retry later" }; // additional details
-    next(err);
-  });
-// app.use(passport.initialize());
-//   app.use(passport.session());
+
+init(server);
 
 
-// Authenticate before establishing a socket connection
+//   const io = new Server(server, {
+//     cors: {
+//         origin: '*',
+//         Credentials: true,
+//         methods: ['GET', 'POST'],
+//     },
 
-  
+//     transports: ['polling', 'websocket'],
+// 	allowEIO3: true
+
+// });
+
+
+
+// io.on('connection', (socket) => {
+//     //let io = socket
+//     socket.emit('start', 'START');
+
+//    // app.set('socket', socket);
+//     //socketOrder(socket);
+
+
+ 
+// });
+
+
+
+
+
+
+//app.set('socketio', io);
+//socketOrder(io);
 
 
 
@@ -139,14 +147,31 @@ io.use((socket, next) => {
 
 
 // app.use(function (req, res, next) {
-//     req.io = io;
+//     req.socket = io;
 //     next();
 //   });
 
 
 
-//socketOrder(io);
+// io.engine.on('connection_error', (err) => {
+//     console.log(err.req); // the request object
+//     console.log(err.code); // the error code, for example 1
+//     console.log(err.message); // the error message, for example "Session ID unknown"
+//     console.log(err.context); // some additional error context
+// });
 
-module.exports = app;
+// io.use((socket, next) => {
+//     next();
+//   });
 
+// app.use(passport.initialize());
+//   app.use(passport.session());
 
+// Authenticate before establishing a socket connection
+
+// app.use(function (req, res, next) {
+//     req.io = io;
+//     next();
+//   });
+
+module.exports = app ;

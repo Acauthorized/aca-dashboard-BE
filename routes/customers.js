@@ -25,13 +25,14 @@ router.get("/:id", auth, allowRoles("admin", "staff"), getCustomerById);
 router.get(
   "/find/:name",
   auth,
-  allowRoles("admin", "staff"),
+  //allowRoles("admin", "staff"),
   getCustomerByName
 );
 
 router.post("/", auth,allowRoles("admin", "staff") ,createCustomer);
 router.put("/:id", auth, allowRoles("admin", "staff"), updateCustomer);
 router.delete("/:id", auth, allowRoles("admin" ,"staff"), deleteCustomer);
+
 
 
 // updateCustomerStatus

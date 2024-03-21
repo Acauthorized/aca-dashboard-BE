@@ -2,20 +2,22 @@ const multer = require('multer');
 const { randomBytes } = require("crypto");
 // const AWS = require("aws-sdk");
 
-// prepare S3 client
+
+
+
 const bucketName = 'acabucket';
 const region = 'us-east-1';
 const accessKeyId = 'DO00XPGN8Q86MN438NN3';
 const secretAccessKey = 'VNM2xYl0Yu4o/BLeJWq/r26hgH0omZQ08z7ROlVZizc';
 
-// AWS_BUCKET_NAME = dash93
-// AWS_BUCKET_REGION =us-east-1
-
-// AWS_ACCESS_KEY =DO00M9XA6DJ9P9Y4UWFT
-// AWS_SECRET_ACCESS_KEY =fcWJxA4nn0r5yNKUi1011UzQ66FPMO6Lt8UEuGWSypE
 
 const endpoint = 'https://nyc3.digitaloceanspaces.com';
 const cdnEndpoint = 'https://acabucket.nyc3.digitaloceanspaces.com';
+
+
+
+
+
 
 const { S3Client, PutObjectCommand, ListBucketsCommand } = require('@aws-sdk/client-s3');
 
@@ -42,7 +44,7 @@ const uploadFile = async (filename, bucketname, folder, file, contentType) => {
 
     const params = {
         Key: key,
-        Bucket: 'acabucket',
+        Bucket: bucketName,
         Body: file,
         ContentType: contentType,
         ACL: 'public-read',
