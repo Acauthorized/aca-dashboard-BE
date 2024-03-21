@@ -23,13 +23,15 @@ function init(httpServer) {
 
         socket.emit('start', 'start');
 
-        io.sockets.on('search', (data) => {
+       socket.on('search', (data) => {
+        socket.emit('start', 'start search');
             console.log('SEARCH🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟', data);
            // io.emit('search_cust', data);
            io.sockets.emit('search_server', { ...data, message: 'Search from server with data' });
         });
 
-        io.sockets.on('create_cust', (data) => {
+    socket.on('create_cust', (data) => {
+        socket.emit('start', 'start create customer');
             console.log('SEARCH🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟', data);
 
             io.sockets.emit('create_cust-execute', { ...data, message: 'New Customer created by agent' });
@@ -37,7 +39,8 @@ function init(httpServer) {
 
         //io.emit('status', notification);
 
-        io.sockets.on('status-customer', (data) => {
+        socket.on('status-customer', (data) => {
+            socket.emit('start', 'start status change');
             console.log('STATUSSSSSSSSSSSSS🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟', data);
 
             io.sockets.emit('status', { status: data, message: ' Customer Status changed' });
