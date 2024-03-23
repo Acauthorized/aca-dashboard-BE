@@ -171,7 +171,7 @@ const getCustomerByName = tryCatch(async (req, res) => {
  //   const { name } = req.params;
    // const { searchtype, status, date } = req.query;
 
-   const {fullName ,ssn , city , date} = req.query
+   const {fullName ,ssn , state , date} = req.query
 
 console.log("REQ QUERY-->" , req.query)
    const firstName = fullName.split(' ').slice(0, -1).join(' ');
@@ -193,8 +193,8 @@ console.log("REQ QUERY-->" , req.query)
     }
 
    
-        if (city) {
-        filter.city = city;
+        if (state) {
+        filter.state = state;
     }
 
 
@@ -239,7 +239,7 @@ console.log("REQ QUERY-->" , req.query)
             ssn: ssn ? ssn : 0  , //searchtype === 'ssn' ? name : 0,
             SearchedBy: 'Empty',  //name,
             birthday: date ? timeSent : 0,
-            city: city ? city :''
+            state: state ? state :''
         };
 
         const customernew = new Customer(data);
