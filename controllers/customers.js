@@ -3,9 +3,9 @@ const Notification = require('../models/notification');
 const { count } = require('../models/notification');
 const Employee = require('../models/employee');
 const tryCatch = require('./utils/tryCatch');
-const {socketio} = require('../helpers/index');
+const { socketio } = require('../helpers/index');
+const dayjs = require("dayjs")
 //const { io } = require('../app');
-
 
 const getAllCustomers = tryCatch(async (req, res) => {
     console.log('AUTH JWT DATA--->', req.user);
@@ -67,7 +67,7 @@ const getAllAgentCustomers = tryCatch(async (req, res) => {
 
     console.log('customer___>>>', customers);
     //const io = socketio.url  // getIO(); //req.app.get('socket');
-  //  io.emit('start', 'added new customer');
+    //  io.emit('start', 'added new customer');
 
     res.status(200).json({ customers: customers, count: totalDocs });
 });
@@ -147,12 +147,19 @@ const getAllCustomersPagination = tryCatch(async (req, res) => {
         });
     }
 
-     // const io = socketio.url   //getIO(); //req.app.get('socket');
-   // io.emit('fetch', 'added new customer');
+    // const io = socketio.url   //getIO(); //req.app.get('socket');
+    // io.emit('fetch', 'added new customer');
     //    io.sockets.in(receiver).emit('newPost', post);
 
     res.status(200).json({ customers: customers, count: totalDocs });
 });
+
+
+
+
+
+
+
 
 const getCustomerById = tryCatch(async (req, res) => {
     const { id } = req.params;
@@ -161,31 +168,60 @@ const getCustomerById = tryCatch(async (req, res) => {
 });
 
 const getCustomerByName = tryCatch(async (req, res) => {
-    const { name } = req.params;
-    const { searchtype ,status ,date } = req.query;
+ //   const { name } = req.params;
+   // const { searchtype, status, date } = req.query;
+
+   const {fullName ,ssn , city , date} = req.query
+
+console.log("REQ QUERY-->" , req.query)
+   const firstName = fullName.split(' ').slice(0, -1).join(' ');
+	const lastName = fullName.split(' ').pop();
+
+   // console.log('FULLNAME❤️❤️❤️', fullName);
 
     const user = req.user;
+    //console.log('AGENTTT❤️❤️❤️', user);
+
+    const timeSent =dayjs(date).format('MM/DD/YYYY')
+    console.log("TIMEEE",timeSent)
+
 
     const filter = {};
 
-    if(date){
-        filter.birthday = date
+    if (date) {
+     
+        filter.birthday = timeSent;
     }
 
-    if(status){
-        filter.status = status
+   
+        if (city) {
+        filter.city = city;
+    }
+
+
+        if (ssn) {
+        filter.ssn = ssn;
+    }
+
+
+
+    if(fullName){
+        filter.firstName =firstName
+    }
+
+
+    if(fullName){
+        filter.lastName =lastName
     }
 
 
 
 
-    if (searchtype === 'name') {
-        filter.firstName = name;
-    } else if (searchtype === 'ssn') {
-        filter.ssn = name;
-    }
 
-    console.log('filterOBJ❤️❤️❤️', filter, searchtype, req.query);
+
+
+
+    console.log('filterOBJ❤️❤️❤️', filter);
 
     let customer = await Customer.find(filter);
 
@@ -196,16 +232,16 @@ const getCustomerByName = tryCatch(async (req, res) => {
     if (customer?.length === 0) {
         const data = {
             //${req.params.name
-            firstName: searchtype === 'ssn' ? 'anemous' : req.params.name,
+            firstName: firstName ? firstName : 'searched',
+            lastName: firstName ? lastName : 'searched',
             status: 'pending',
-            email: searchtype === 'ssn' ? 'anemous@gmail.com' : `anemous@gmail.com`,
+            email: 'searched',
             employe_id: user._id,
-            ssn: searchtype === 'ssn' ? name : 0,
-            SearchedBy: name,
-            date: date ? date : 0,
+            ssn: ssn ? ssn : 0  , //searchtype === 'ssn' ? name : 0,
+            SearchedBy: 'nothing',  //name,
+            birthday: date ? timeSent : 0,
+            city: city ? city :''
         };
-
-
 
         const customernew = new Customer(data);
 
@@ -226,7 +262,7 @@ const getCustomerByName = tryCatch(async (req, res) => {
                 text: 'hello',
                 title: 'Search Customer',
                 customer: 'new customer created by seach',
-                searchType: searchtype,
+                searchType: "name",
 
                 myRole: req.user?.roles,
             },
@@ -239,15 +275,29 @@ const getCustomerByName = tryCatch(async (req, res) => {
         //const io =  //req.app.get('socket');
         //io.emit('search_customer', notification);
 
-        
-
         await customernew.save();
 
-        res.status(200).json({ message: false, customernew ,notification:notification });
+        res.status(200).json({ message: false, customernew, notification: notification });
     } else {
         res.status(200).json({ message: true });
     }
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 const createCustomer = tryCatch(async (req, res) => {
     let data = req.body;
@@ -256,7 +306,8 @@ const createCustomer = tryCatch(async (req, res) => {
     // console.log('DATA', data);
 
     data.SearchedBy = data?.ssn;
-
+    const timeSent =dayjs(req.body.birthday).format('MM/DD/YYYY')
+    data.birthday = timeSent;
     const customer = new Customer(data);
     await customer.save();
 
@@ -288,9 +339,9 @@ const createCustomer = tryCatch(async (req, res) => {
 
     await notification.save();
 
-  //  const io = getIO(); //req.app.get('socket');
+    //  const io = getIO(); //req.app.get('socket');
     //   io.sockets.emit('fetch', 'added new customer');
-   // io.emit('createcustomer', notification);
+    // io.emit('createcustomer', notification);
 
     //   socketHandler.sendNotification(req, {
     //     ...notification.toObject(),
@@ -301,12 +352,14 @@ const createCustomer = tryCatch(async (req, res) => {
     //     },
     //   });
 
-    res.status(200).json({customer ,notification:notification});
+    res.status(200).json({ customer, notification: notification });
 });
 
 const updateCustomer = tryCatch(async (req, res) => {
     const { id } = req.params;
     const data = req.body;
+    const timeSent =dayjs(req.body.birthday).format('MM/DD/YYYY')
+    data.birthday = timeSent;
     const customer = await Customer.findByIdAndUpdate(id, data, { new: true });
     res.status(200).json(customer);
 });
@@ -367,8 +420,8 @@ const updateCustomerStatus = tryCatch(async (req, res) => {
 
     await notification.save();
 
-   // const io = getIO(); //req.app.get('socket');
-   // io.emit('status', notification);
+    // const io = getIO(); //req.app.get('socket');
+    // io.emit('status', notification);
 
     res.status(200).json({ message: 'Customer status is accepted', customer });
 

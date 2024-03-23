@@ -38,10 +38,10 @@ const allowRoles = (...roles) => {
                         // req.user =user
                         next();
                     } else {
-                        response.status(403).json({ message: 'Forbidden' }); // user is forbidden
+                        response.status(403).json({ message: 'User isForbidden' }); // user is forbidden
                     }
                 } else {
-                    response.status(403).json({ message: 'Forbidden' }); // user is forbidden
+                    response.status(403).json({ message: 'User is Forbidden' }); // user is forbidden
                 }
             })
             .catch(() => {

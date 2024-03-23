@@ -23,7 +23,7 @@ router.get("/",auth, allowRoles("admin", "staff"), getAllCustomersPagination);
 router.get("/agentCustomers",auth, allowRoles("admin", "staff"), getAllAgentCustomers);
 router.get("/:id", auth, allowRoles("admin", "staff"), getCustomerById);
 router.get(
-  "/find/:name",
+  "/find/search",
   auth,
   //allowRoles("admin", "staff"),
   getCustomerByName
