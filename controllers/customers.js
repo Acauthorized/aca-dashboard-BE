@@ -182,8 +182,7 @@ console.log("REQ QUERY-->" , req.query)
     const user = req.user;
     //console.log('AGENTTT❤️❤️❤️', user);
 
-    const timeSent =dayjs(date).format('MM/DD/YYYY')
-    console.log("TIMEEE",timeSent)
+   
 
 
     const filter = {};
@@ -235,10 +234,10 @@ console.log("REQ QUERY-->" , req.query)
             firstName: firstName ? firstName : 'searched',
             lastName: firstName ? lastName : 'searched',
             status: 'pending',
-            email: 'searched',
+            email: '',
             employe_id: user._id,
             ssn: ssn ? ssn : 0  , //searchtype === 'ssn' ? name : 0,
-            SearchedBy: 'nothing',  //name,
+            SearchedBy: 'Empty',  //name,
             birthday: date ? timeSent : 0,
             city: city ? city :''
         };
