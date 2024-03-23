@@ -4,7 +4,7 @@ const { count } = require('../models/notification');
 const Employee = require('../models/employee');
 const tryCatch = require('./utils/tryCatch');
 const { socketio } = require('../helpers/index');
-const dayjs = require("dayjs")
+const dayjs = require('dayjs');
 //const { io } = require('../app');
 
 const getAllCustomers = tryCatch(async (req, res) => {
@@ -154,13 +154,6 @@ const getAllCustomersPagination = tryCatch(async (req, res) => {
     res.status(200).json({ customers: customers, count: totalDocs });
 });
 
-
-
-
-
-
-
-
 const getCustomerById = tryCatch(async (req, res) => {
     const { id } = req.params;
     const customer = await Customer.findById(id);
@@ -168,57 +161,41 @@ const getCustomerById = tryCatch(async (req, res) => {
 });
 
 const getCustomerByName = tryCatch(async (req, res) => {
- //   const { name } = req.params;
-   // const { searchtype, status, date } = req.query;
+    //   const { name } = req.params;
+    // const { searchtype, status, date } = req.query;
 
-   const {fullName ,ssn , state , date} = req.query
+    const { fullName, ssn, state, date } = req.query;
 
-console.log("REQ QUERY-->" , req.query)
-   const firstName = fullName.split(' ').slice(0, -1).join(' ');
-	const lastName = fullName.split(' ').pop();
+    console.log('REQ QUERY-->', req.query);
+    const firstName = fullName.split(' ').slice(0, -1).join(' ');
+    const lastName = fullName.split(' ').pop();
 
-   // console.log('FULLNAME❤️❤️❤️', fullName);
+    // console.log('FULLNAME❤️❤️❤️', fullName);
 
     const user = req.user;
     //console.log('AGENTTT❤️❤️❤️', user);
 
-   
-
-
     const filter = {};
 
     if (date) {
-     
         filter.birthday = timeSent;
     }
 
-   
-        if (state) {
+    if (state) {
         filter.state = state;
     }
 
-
-        if (ssn) {
+    if (ssn) {
         filter.ssn = ssn;
     }
 
-
-
-    if(fullName){
-        filter.firstName =firstName
+    if (fullName) {
+        filter.firstName = firstName;
     }
 
-
-    if(fullName){
-        filter.lastName =lastName
+    if (fullName) {
+        filter.lastName = lastName;
     }
-
-
-
-
-
-
-
 
     console.log('filterOBJ❤️❤️❤️', filter);
 
@@ -236,10 +213,10 @@ console.log("REQ QUERY-->" , req.query)
             status: 'pending',
             email: '',
             employe_id: user._id,
-            ssn: ssn ? ssn : 0  , //searchtype === 'ssn' ? name : 0,
-            SearchedBy: 'Empty',  //name,
+            ssn: ssn ? ssn : 0, //searchtype === 'ssn' ? name : 0,
+            SearchedBy: 'Empty', //name,
             birthday: date ? timeSent : 0,
-            state: state ? state :''
+            state: state ? state : '',
         };
 
         const customernew = new Customer(data);
@@ -261,7 +238,7 @@ console.log("REQ QUERY-->" , req.query)
                 text: 'hello',
                 title: 'Search Customer',
                 customer: 'new customer created by seach',
-                searchType: "name",
+                searchType: 'name',
 
                 myRole: req.user?.roles,
             },
@@ -282,22 +259,6 @@ console.log("REQ QUERY-->" , req.query)
     }
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 const createCustomer = tryCatch(async (req, res) => {
     let data = req.body;
 
@@ -305,7 +266,7 @@ const createCustomer = tryCatch(async (req, res) => {
     // console.log('DATA', data);
 
     data.SearchedBy = data?.ssn;
-    const timeSent =dayjs(req.body.birthday).format('MM/DD/YYYY')
+    const timeSent = dayjs(req.body.birthday).format('MM/DD/YYYY');
     data.birthday = timeSent;
     const customer = new Customer(data);
     await customer.save();
@@ -357,7 +318,7 @@ const createCustomer = tryCatch(async (req, res) => {
 const updateCustomer = tryCatch(async (req, res) => {
     const { id } = req.params;
     const data = req.body;
-    const timeSent =dayjs(req.body.birthday).format('MM/DD/YYYY')
+    const timeSent = dayjs(req.body.birthday).format('MM/DD/YYYY');
     data.birthday = timeSent;
     const customer = await Customer.findByIdAndUpdate(id, data, { new: true });
     res.status(200).json(customer);
