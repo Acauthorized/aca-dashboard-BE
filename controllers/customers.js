@@ -216,7 +216,7 @@ const getCustomerByName = tryCatch(async (req, res) => {
             employe_id: user._id,
             ssn: ssn ? ssn : 0, //searchtype === 'ssn' ? name : 0,
             SearchedBy: 'Empty', //name,
-            birthday: date ? timeSent : 0,
+            birthday:  date ? date : 0,  // date ?   timeSent : 0,
             state: state ? state : '',
         };
 
