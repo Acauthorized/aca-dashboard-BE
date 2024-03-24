@@ -178,7 +178,7 @@ const getCustomerByName = tryCatch(async (req, res) => {
     const filter = {};
 
    // const timeSent = dayjs(date).format('MM/DD/YYYY');
-    const tomorrow = dayjs(date).add(1, "day").format("(MM/DD/YYYY)")
+    const tomorrow = dayjs(date).add(1, "day").format("(MM/DD/YYYY)").slice(1,-1)
     if (date) {
         filter.birthday = tomorrow;
     }
