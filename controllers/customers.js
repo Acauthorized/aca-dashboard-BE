@@ -268,7 +268,7 @@ const createCustomer = tryCatch(async (req, res) => {
 
     data.SearchedBy = data?.ssn;
     const timeSent = dayjs(req.body.birthday).format('MM/DD/YYYY');
-    data.birthday = timeSent;
+    //data.birthday = timeSent;
     const customer = new Customer(data);
     await customer.save();
 
