@@ -320,7 +320,7 @@ const updateCustomer = tryCatch(async (req, res) => {
     const { id } = req.params;
     const data = req.body;
     const timeSent = dayjs(req.body.birthday).format('MM/DD/YYYY');
-    data.birthday = timeSent;
+    //data.birthday =  // timeSent;
     const customer = await Customer.findByIdAndUpdate(id, data, { new: true });
     res.status(200).json(customer);
 });
