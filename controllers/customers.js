@@ -178,8 +178,9 @@ const getCustomerByName = tryCatch(async (req, res) => {
     const filter = {};
 
     const timeSent = dayjs(date).format('MM/DD/YYYY');
+    const tomorrow = dayjs(timeSent).add(24, "hours");
     if (date) {
-        filter.birthday = timeSent;
+        filter.birthday = tomorrow;
     }
 
     if (state) {
@@ -216,7 +217,7 @@ const getCustomerByName = tryCatch(async (req, res) => {
             employe_id: user._id,
             ssn: ssn ? ssn : 0, //searchtype === 'ssn' ? name : 0,
             SearchedBy: 'Empty', //name,
-            birthday:     date ?   timeSent : 0,
+            birthday:     date ?   tomorrow : 0,
             state: state ? state : '',
         };
 
@@ -324,6 +325,8 @@ const updateCustomer = tryCatch(async (req, res) => {
     const customer = await Customer.findByIdAndUpdate(id, data, { new: true });
     res.status(200).json(customer);
 });
+
+
 
 const deleteCustomer = tryCatch(async (req, res) => {
     const { id } = req.params;
